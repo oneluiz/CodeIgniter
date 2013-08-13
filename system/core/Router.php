@@ -270,8 +270,7 @@ class CI_Router {
 			return $segments;
 		}
 
-		$test = ($this->translate_uri_dashes === TRUE)
-			? str_replace('-', '_', $segments[0]) : $segments[0];
+		$test = ucfirst($this->translate_uri_dashes === TRUE ? str_replace('-', '_', $segments[0]) : $segments[0]);
 
 		// Does the requested controller exist in the root folder?
 		if (file_exists(APPPATH.'controllers/'.$test.'.php'))
@@ -286,8 +285,7 @@ class CI_Router {
 			$this->set_directory(array_shift($segments));
 			if (count($segments) > 0)
 			{
-				$test = ($this->translate_uri_dashes === TRUE)
-					? str_replace('-', '_', $segments[0]) : $segments[0];
+				$test = ucfirst($this->translate_uri_dashes === TRUE ? str_replace('-', '_', $segments[0]) : $segments[0]);
 
 				// Does the requested controller exist in the sub-directory?
 				if ( ! file_exists(APPPATH.'controllers/'.$this->directory.$test.'.php'))
@@ -307,7 +305,7 @@ class CI_Router {
 			{
 				// Is the method being specified in the route?
 				$segments = explode('/', $this->default_controller);
-				if ( ! file_exists(APPPATH.'controllers/'.$this->directory.$segments[0].'.php'))
+				if ( ! file_exists(APPPATH.'controllers/'.$this->directory.ucfirst($segments[0]).'.php'))
 				{
 					$this->directory = '';
 				}
@@ -353,10 +351,10 @@ class CI_Router {
 			return $this->_set_request(explode('/', $this->routes[$uri]));
 		}
 
-		// Loop through the route array looking for wild-cards
+		// Loop through the route array looking for wildcards
 		foreach ($this->routes as $key => $val)
 		{
-			// Convert wild-cards to RegEx
+			// Convert wildcards to RegEx
 			$key = str_replace(array(':any', ':num'), array('[^/]+', '[0-9]+'), $key);
 
 			// Does the RegEx match?
